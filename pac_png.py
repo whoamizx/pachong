@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 import random
 from selenium.webdriver.chrome.options import Options
 import time
+import os
+from pathlib import Path
 
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -70,6 +72,19 @@ def scrape_pages(keyword, save_path, total_pages):
 
     driver.quit()
     print(f"爬取完成，共保存了 {num} 个网址")
+
+
+with open("names.txt", 'r', encoding='utf-8') as f:
+    for line in f:
+        line = line.strip()
+        if not os.path.exists(Path(os.path.join(saveroot,line))):
+            os.makedirs(Path(os.path.join(saveroot,line)))
+        subsaveroot = Path(os.path.join(saveroot,line))
+        # keyword = "{} filetype:png".format(line)
+        keyword = line
+        save_path = Path(os.path.join(subsaveroot, "url.txt"))
+        total_pages = 2
+        scrape_pages(keyword, save_path, total_pages)
 
 keyword = "运-20"
 save_path = "F:/cache/pachong/result.txt"

@@ -73,7 +73,7 @@ def scrape_pages(keyword, save_path, total_pages):
     driver.quit()
     print(f"爬取完成，共保存了 {num} 个网址")
 
-
+saveroot = r"F:\cache\pachong"
 with open("names.txt", 'r', encoding='utf-8') as f:
     for line in f:
         line = line.strip()
@@ -86,7 +86,7 @@ with open("names.txt", 'r', encoding='utf-8') as f:
         total_pages = 2
         scrape_pages(keyword, save_path, total_pages)
 
-keyword = "运-20"
-save_path = "F:/cache/pachong/result.txt"
-total_pages = 200
-scrape_pages(keyword, save_path, total_pages)
+# keyword = "运-20"
+# save_path = "F:/cache/pachong/result.txt"
+# total_pages = 200
+# scrape_pages(keyword, save_path, total_pages)

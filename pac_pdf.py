@@ -32,7 +32,7 @@ def scrape_pages(keyword, save_path, total_pages):
     for i in range(total_pages):
         page = 10 * i + 1
         time.sleep(random.uniform(2, 5))
-        url = 'http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=' + keyword
+        url = f'https://www.bing.com/search?q={urllib.parse.quote(keyword)}&first={page}'
         driver.get(url)
 
         # 等待页面加载

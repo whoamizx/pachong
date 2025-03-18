@@ -32,7 +32,7 @@ def scrape_pages(keyword, save_path, total_pages):
     for i in range(total_pages):
         page = 10 * i + 1
         time.sleep(random.uniform(2, 5))
-        url = f'https://www.bing.com/search?q={urllib.parse.quote(keyword)}&first={page}'
+        url = 'https://image.baidu.com/search/index?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=&st=-1&fm=index&fr=&hs=0&xthttps=111110&sf=1&fmq=&pv=&ic=0&nc=1&z=&se=&showtab=0&fb=0&width=&height=&face=0&istype=2&ie=utf-8&word=' + keyword
         driver.get(url)
 
         # 等待页面加载
@@ -53,31 +53,15 @@ def scrape_pages(keyword, save_path, total_pages):
             print(html)
             soup = BeautifulSoup(html, 'html.parser')
             
-            # 获取所有 h2 元素
-            h2_elements = soup.find_all('h2')
-            # 提取搜索结果链接
-            links = []
-            for h2 in h2_elements:
-                a_tag = h2.find('a')
-                if a_tag and 'href' in a_tag.attrs:
-                    links.append(a_tag['href'])
-            # 遍历每个链接爬取二级页面中的图片
-            for link in links:
-                try:
-                    driver.get(link)
-                    time.sleep(random.uniform(2, 5))
-                    html_secondary = driver.page_source
-                    soup_secondary = BeautifulSoup(html_secondary, 'html.parser')
-                    img_tags = soup_secondary.find_all('img')
-                    with open(save_path, 'a', encoding='utf-8') as f:
-                        for img in img_tags:
-                            src = img.get('src')
-                            if src:
-                                full_src = urllib.parse.urljoin(link, src)
-                                f.write(full_src + '\n')
-                                num += 1
-                except Exception as e:
-                    print(f"Error crawling secondary page {link}: {e}")
+            # 爬取一级页面中所有图片
+            img_tags = soup.find_all('img')
+            with open(save_path, 'a', encoding='utf-8') as f:
+                for img in img_tags:
+                    src = img.get('src')
+                    if src:
+                        full_src = urllib.parse.urljoin(url, src)
+                        f.write(full_src + '\n')
+                        num += 1
 
             print(f"已保存 {i+1} 页，共保存了 {num} 个网址")
 
